@@ -9,6 +9,8 @@ use App\Http\Controllers\ProblemeController;
 use App\Http\Controllers\BontravailPDFController;
 use App\Http\Controllers\FicheInterventionController;
 use App\Http\Controllers\FacturesController;
+use App\Http\Controllers\FicheInterventionPDFController;
+use App\Http\Controllers\DashboardController;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 /*
@@ -26,9 +28,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+   ;
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -69,6 +73,7 @@ Route::middleware('auth')->group(function () {
 }); 
 
 Route::get('/pdf/{id}',[BontravailPDFController::class, 'index'])->name('pdf.bontravail');
+Route::get('/pdf/{id}/fiche',[FicheInterventionPDFController::class, 'index'])->name('pdf.FicheInterventionPDF');
 
 
 Route::middleware('auth')->group(function () {

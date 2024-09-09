@@ -27,7 +27,7 @@
 
                 <div class="row mb-3">
                     <div class="col-12 col-md-6">
-                        <label for="">Pavillon</label>
+                        <label for="NomPav">Pavillon</label>
                         <input type="text" name="NomPav" class="form-control" placeholder="Pavillon">
                     </div>
 

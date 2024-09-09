@@ -46,7 +46,7 @@
             <th scope="col">N° Chambre</th>
             
             <th scope="col">Objet</th>
-            <th scope="col">Create at</th>
+           
             <th scope="col">Statut</th>
             
             <th scope="col">Action</th>
@@ -62,7 +62,7 @@
             <td>{{$problemes->NumChambre}}</td>
             
             <td>{{$problemes->Objet}}</td>
-            <td>{{ $problemes->created_at->format('Y-m-d') }}</td>
+           
             <td>
             
             <div class="form-check form-switch">

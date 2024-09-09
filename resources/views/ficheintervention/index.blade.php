@@ -55,7 +55,7 @@
                             @endcan
 
                             @can('edit-users')
-                            <a href="#"><button class="btn btn-success">
+                            <a href="{{route ('pdf.FicheInterventionPDF', $fiches->id)}}"><button class="btn btn-success">
                                 <i class="fa fa-print" aria-hidden="true"></i>
                                 </button></a>
                             @endcan
