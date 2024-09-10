@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\models\Probleme;
 use App\models\Factures;
+use App\models\Notification;
 
 class DashboardController extends Controller
 {
@@ -14,7 +15,7 @@ class DashboardController extends Controller
         $totalProblemes = Probleme::count();
         $totalfactures = Factures::count();
 
-        
+       
 
          // Récupérer le nombre de problèmes résolus
          $problemesResolus = Probleme::where('etat', 1)->count();
@@ -32,9 +33,22 @@ class DashboardController extends Controller
         $pavillons = $problemesParPavillon->pluck('pavillon_NomPav'); // Noms des pavillons
         $totaux = $problemesParPavillon->pluck('total'); // Nombre de problèmes par pavillon
 
+     
 
+     // Récupérer les notifications non lues
+     $notifications = Notification::where('read', false)->get();
 
-        // Passer la variable à la vue
-        return view('dashboard.index', compact('totalProblemes', 'problemesResolus', 'problemesNonResolus', 'totalfactures', 'pavillons','totaux'));
-    }
+     // Passer les variables à la vue
+     return view('dashboard.index', compact('totalProblemes', 'problemesResolus', 'problemesNonResolus', 'totalfactures', 'pavillons', 'totaux', 'notifications'));
+}
+
+public function markAsRead()
+{
+    Notification::where('read', false)->update(['read' => true]);
+
+    // Vérifier le nombre de notifications non lues après l'update
+    $nonLues = Notification::where('read', false)->count();
+    return response()->json(['status' => 'success', 'non_lues' => $nonLues]);
+}
+
 }

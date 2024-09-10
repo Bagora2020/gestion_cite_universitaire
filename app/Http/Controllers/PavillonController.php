@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\models\Pavillon;
+use App\models\Notification;
 
 class PavillonController extends Controller
 {
     public function index()
     {
         $pavillon = Pavillon::All();
-        return view('pavillon.index',compact('pavillon'));
+        $notifications = Notification::where('read', false)->get();
+        return view('pavillon.index',compact('pavillon','notifications'));
     }
 
     public function create(){
-        return view('pavillon.create');
+        $notifications = Notification::where('read', false)->get();
+        return view('pavillon.create', compact('notifications'));
     }
 
     public function store(Request $request)

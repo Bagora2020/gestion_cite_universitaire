@@ -11,6 +11,7 @@ use App\Http\Controllers\FicheInterventionController;
 use App\Http\Controllers\FacturesController;
 use App\Http\Controllers\FicheInterventionPDFController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 /*
@@ -94,5 +95,17 @@ Route::middleware('auth')->group(function () {
     Route::put('/Factures/{id}/Update', [FacturesController::class, 'update'])->name('Factures.update');
     Route::delete('/Factures/{id}/delete', [FacturesController::class, 'destroy'])->name('Factures.destroy');
 }); 
+
+//notification
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::post('/notifications/markAsRead', [DashboardController::class, 'markAsRead'])->name('notifications.markAsRead');
+Route::post('/notifications/mark-as-read', [DashboardController::class, 'markAsRead'])->name('notifications.markAsRead');
+
+Route::post('/notifications/{id}/markAsRead', [NotificationController::class, 'markAsRead']);
+Route::post('/notifications/markAllAsRead', [NotificationController::class, 'markAllAsRead']);
+
+
+
+
    
 require __DIR__.'/auth.php';

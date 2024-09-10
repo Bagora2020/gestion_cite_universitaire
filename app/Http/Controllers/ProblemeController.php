@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\models\Probleme;
 use App\models\Pavillon;
+use App\Models\Notification;
+
 
 class ProblemeController extends Controller
 {
@@ -39,14 +41,18 @@ class ProblemeController extends Controller
     $probleme = $query->get();
 
     \Log::info("Filtered Results: ", $probleme->toArray());
+
+    $notifications = Notification::where('read', false)->get();
+    
         
-        return view('probleme.index',compact('probleme'));
+        return view('probleme.index',compact('probleme','notifications'));
     }
 
     public function create(){
         $pavillon= Pavillon::all();
 
-        return view('probleme.create',compact('pavillon'));
+        $notifications = Notification::where('read', false)->get();
+        return view('probleme.create',compact('pavillon','notifications'));
     }
 
     public function store(Request $request)
@@ -84,7 +90,20 @@ class ProblemeController extends Controller
             'message' => $request->message,
             'pavillon_NomPav' => $request->pavillon_NomPav,
         ]);
-        return redirect()->route('probleme.index')->with('success', "probleme ajouté avec Succés");
+
+        
+
+        // Créer une notification pour le problème ajouté
+        Notification::create([
+            'message' => 'Un nouveau problème a été signalé dans le pavillon ' . $request->pavillon_NomPav,
+             ]);
+
+             $notifications = Notification::where('read', false)->get();
+
+        return redirect()->route('probleme.index', compact('notifications'))->with('success', "probleme ajouté avec Succés");
+
+
+            
     }
 
 

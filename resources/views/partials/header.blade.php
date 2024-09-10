@@ -30,53 +30,40 @@
                 </form>
               </div>
             </li>
+            
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
-                <span class="badge badge-danger badge-counter">3+</span>
+                <span class="badge badge-danger badge-counter">{{ $notifications->count() }}</span>
               </a>
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
-                  Alerts Center
-                </h6>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+        @if($notifications->isEmpty())
+            <a class="dropdown-item">Aucune nouvelle notification</a>
+        @else
+            <h6 class="dropdown-header">Notifications</h6>
+            @foreach($notifications as $notification)
                 <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-primary">
-                      <i class="fas fa-file-alt text-white"></i>
+                    <div class="mr-3">
+                        <div class="icon-circle bg-primary">
+                            <i class="fas fa-exclamation-triangle text-white"></i>
+                        </div>
                     </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 12, 2019</div>
-                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-success">
-                      <i class="fas fa-donate text-white"></i>
+                    <div>
+                        <span class="font-weight-bold">{{ $notification->message }}</span>
+                        <small>{{ $notification->created_at->format('d/m/Y H:i') }}</small> <!-- Affiche la date -->
+            </a>
                     </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 7, 2019</div>
-                    $290.29 has been deposited into your account!
-                  </div>
                 </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-warning">
-                      <i class="fas fa-exclamation-triangle text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 2, 2019</div>
-                    Spending Alert: We've noticed unusually high spending for your account.
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-              </div>
+            @endforeach
+            <button id="markAsRead" class="btn btn-primary btn-sm">Marquer comme lu</button>
+        @endif
+    </div>
             </li>
+
+      
+
+
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -192,4 +179,47 @@
               </div>
             </li>
           </ul>
+
+
+          <script>
+    $('#markAllRead').click(function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '{{ route("notifications.markAsRead") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    location.reload(); // Recharge la page pour mettre à jour l'icône de notification
+                }
+            },
+            error: function(xhr) {
+                alert('Erreur lors de la mise à jour des notifications.');
+            }
+        });
+    });
+</script>
+
+
+<script>
+    document.getElementById('markAsRead').addEventListener('click', function() {
+        fetch('{{ route("notifications.markAsRead") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Notifications marquées comme lues');
+                location.reload();  // Recharge la page pour voir la mise à jour
+            }
+        })
+        .catch(error => console.error('Erreur:', error));
+    });
+</script>
         </nav>

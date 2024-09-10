@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\models\Factures;
+use App\models\Notification;
 
 use Illuminate\Http\Request;
 
@@ -10,11 +11,13 @@ class FacturesController extends Controller
     public function index()
     {
         $facture = Factures::All();
-        return view('Factures.index',compact('facture'));
+        $notifications = Notification::where('read', false)->get();
+        return view('Factures.index',compact('facture', 'notifications'));
     }
 
     public function create(){
-        return view('Factures.create');
+        $notifications = Notification::where('read', false)->get();
+        return view('Factures.create', compact('notifications'));
     }
 
     public function store(Request $request)

@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\models\FicheIntervention;
+use App\models\Notification;
 
 class FicheInterventionController extends Controller
 {
     public function index()
     {
         $fiche = FicheIntervention::All();
-        return view('ficheintervention.index',compact('fiche'));
+        $notifications = Notification::where('read', false)->get();
+        return view('ficheintervention.index',compact('fiche','notifications'));
     }
 
     public function create(){
-        return view('ficheintervention.create');
+        $notifications = Notification::where('read', false)->get();
+        return view('ficheintervention.create', compact('notifications'));
     }
 
     public function store(Request $request)
