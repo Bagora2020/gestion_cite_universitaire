@@ -36,7 +36,7 @@
     </form>
 
 
-    <table id="example" class="table">
+    <table id="example" class="table table-bordered">
     <thead>
         <tr>
             <th scope="col">#</th>

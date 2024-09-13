@@ -5,6 +5,11 @@
     <div class="card">
         <div class="card-header d-flex align-content-center justify-content-between">
             <h1 class="h2">Liste des utilisateurs et leurs rôles</h1>
+            <a href="{{route('users.create') }}" class=" float-end btn btn-success">
+                <i class="bi bi-arrow-90deg-left"></i>
+                Ajouter user
+            </a>
+
             <a href="{{ url()->previous() }}" class=" float-end btn btn-danger">
                 <i class="bi bi-arrow-90deg-left"></i>
                 Retour

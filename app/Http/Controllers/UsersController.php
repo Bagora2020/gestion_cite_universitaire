@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\support\facades\Gate;
 
@@ -28,7 +29,9 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        $notifications = Notification::where('read', false)->get();
+        $roles = Role::all();  // Si vous avez des rôles à assigner aux utilisateurs
+        return view('admin.users.create', compact('roles','notifications'));
     }
 
     /**
@@ -36,7 +39,26 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Valider les données
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8|confirmed',
+    ]);
+
+    // Créer un nouvel utilisateur
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+    ]);
+
+    // Assigner des rôles si applicable
+    if ($request->roles) {
+        $user->roles()->attach($request->roles);
+    }
+
+    return redirect()->route('users.index')->with('success', 'Utilisateur ajouté avec succès.');
     }
 
     /**

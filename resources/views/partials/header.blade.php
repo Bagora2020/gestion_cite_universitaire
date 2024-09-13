@@ -1,5 +1,6 @@
-<nav class="navbar navbar-expand navbar-light bg-info topbar mb-4 static-top 
-@if(Route::current()->getName() === 'login' || Route::current()->getName() === 'register')
+<nav class="navbar navbar-expand navbar-light bg-primary topbar mb-4 static-top 
+@if(Route::current()->getName() === 'login' || Route::current()->getName() === 'register') || Route::current()->getName() === '/admin/users/create')
+    
                   d-none
                 @else
                 ''
@@ -152,7 +153,11 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <img class="img-profile rounded-circle" src="img/boy.png" style="max-width: 60px">
-                <span class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
+                <span class="ml-2 d-none d-lg-inline text-white small">
+                @if(auth()->check())
+                  {{ auth()->user()->name }}
+                @endif
+                </span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="/profile">

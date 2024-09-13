@@ -17,8 +17,8 @@
                 <i class="bi bi-folder-plus"></i>
             </a>
     
-    <table class="table table-striped table-bordered">
-        <thead class="table-dark">
+    <table class="table table-bordered mt-4">
+        <thead>
             <tr>
                 <th>#</th>
                 <th>Pavillon</th>

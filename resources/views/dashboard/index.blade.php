@@ -50,9 +50,9 @@
                     <span>Nombre de problèmes</span>
                   </div>
                 </div>
-                <div class="col-auto">
-                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                </div>
+                <div class="icon-circle bg-danger" style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+                   <i class="fas fa-exclamation-triangle text-white" style="font-size: 15px;"></i>
+                 </div>
               </div>
             </div>
           </div>
@@ -64,16 +64,16 @@
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-uppercase mb-1">Problèmes Résolus</div>
+                  <div class="text-xs font-weight-bold text-uppercase mb-1">Problèmes <br> Résolus</div>
                   <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $problemesResolus }}</div>
                   <div class="mt-2 mb-0 text-muted text-xs">
                     <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> </span>
                     <span>Problèmes Résolus</span>
                   </div>
                 </div>
-                <div class="col-auto">
-                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                </div>
+                 <div class="icon-circle bg-success" style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+                   <i class="fas fa-exclamation-triangle text-white" style="font-size: 15px;"></i>
+                 </div>
               </div>
             </div>
           </div>
@@ -91,9 +91,9 @@
                     <span>Problème non-Résolus</span>
                   </div>
                 </div>
-                <div class="col-auto">
-                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                </div>
+                <div class="icon-circle bg-warning" style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+                   <i class="fas fa-exclamation-triangle text-white" style="font-size: 15px;"></i>
+                 </div>
               </div>
             </div>
           </div>
@@ -105,16 +105,16 @@
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-uppercase mb-1">NOMBRE DE FACTURE</div>
+                  <div class="text-xs font-weight-bold text-uppercase mb-1">NOMBRE DE <br>FACTURE</div>
                   <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalfactures}}</div>
                   <div class="mt-2 mb-0 text-muted text-xs">
                     <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> </span>
-                    <span>Nombre DE Factures</span>
+                    <span>Nombre de Factures</span>
                   </div>
                 </div>
-                <div class="col-auto">
-                <i class="fa fa-inbox" aria-hidden="true"></i>
-                </div>
+                  <div class="icon-circle bg-primary" style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+                    <i class="fa fa-inbox text-white" aria-hidden="true"></i>
+                  </div>
               </div>
             </div>
           </div>

@@ -63,8 +63,8 @@ class ProblemeController extends Controller
 
     
         $request->validate([
-            'images.*' => 'required|mimes:jpg,png,jpeg|max:2048', // Chaque fichier doit être une image
-            'Appartement' => 'required',
+            'images.*' => 'required|mimes:jpg,png,jpeg|', // Chaque fichier doit être une image
+            
             'NumChambre' => 'required',
             'Objet' => 'required',
             'message' => 'required',
@@ -72,6 +72,7 @@ class ProblemeController extends Controller
         ]);
     
         $imagePaths = [];
+        
     
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
@@ -121,15 +122,10 @@ class ProblemeController extends Controller
         $probleme = Probleme::findOrFail($id);
         $probleme->update($request->all());
 
-         $request->validate([
-            'images.*' => 'required|mimes:jpg,png,jpeg|max:2048', // Chaque fichier doit être une image
-            'Appartement' => 'required',
-            'NumChambre' => 'required',
-            'Objet' => 'required',
-            'message' => 'required',
-            'pavillon_NomPav' => 'required',
-        ]);
-    
+       
+
+        // Validation des nouvelles images si présentes
+       
         $imagePaths = [];
     
         if ($request->hasFile('images')) {
@@ -140,15 +136,18 @@ class ProblemeController extends Controller
             }
         }
     
-        // Enregistrement des autres informations, y compris le chemin de l'image
-        Probleme::create([
+    
+        // Mise à jour du problème avec les nouvelles informations
+        $probleme->update([
             'Appartement' => $request->Appartement,
             'NumChambre' => $request->NumChambre,
             'Objet' => $request->Objet,
-            'images' => json_encode($imagePaths), // Encode le tableau en JSON
+            'images' => json_encode($imagePaths), // Met à jour les images existantes avec les nouvelles
             'message' => $request->message,
             'pavillon_NomPav' => $request->pavillon_NomPav,
         ]);
+    
+        
         return redirect()->route('probleme.index')->with('success', "probleme ajouté avec Succés");
     }
     

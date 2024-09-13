@@ -26,8 +26,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
+
 
 
 Route::middleware('auth')->group(function () {
@@ -43,6 +44,9 @@ Route::middleware('auth')->group(function () {
    
 Route::middleware('can:manage-app')->group(function () {
     Route::resource('/admin/users', UsersController::class);
+    Route::get('/admin/users/create', [UsersController::class, 'create'])->name('users.create');
+    Route::post('/admin/users/store', [UsersController::class, 'store'])->name('users.store');
+    
     Route::delete('/users/{user}', [UsersController::class, 'destroy'])->name('users.destroy');
 });
 

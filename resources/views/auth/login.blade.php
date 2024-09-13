@@ -1,6 +1,5 @@
-@extends('layouts.apps')
-
-@section('content')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/cerulean/bootstrap.min.css">
+ 
 <div class="container"  style="background-image: url('/img/ouv1.jpg'); background-size: cover; background-position: center; height: 100vh; width: 100vw">
         <div class="row justify-content-center align-items-center" style="height:100vh">
             <div class="col-md-4">
@@ -57,4 +56,4 @@
             </div>
         </div>
     </div>
-@endsection
+
