@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\models\FicheIntervention;
 use App\models\Notification;
+use App\models\Probleme;
 
 class FicheInterventionController extends Controller
 {
     public function index()
     {
-        $fiche = FicheIntervention::All();
+        $fiche = FicheIntervention::with('probleme.pavillon')->get();
+        
         $notifications = Notification::where('read', false)->get();
         return view('ficheintervention.index',compact('fiche','notifications'));
     }
@@ -26,20 +28,42 @@ class FicheInterventionController extends Controller
 
         $fiche = new FicheIntervention();
         $fiche->create([
+            'objet' => $request->Objet,
+            'numSerie' => $request->numSerie,
+            'probleme_id' => $request->probleme_id,
             
-            'nature' => $request->nature,
+            'objet' => $request->objet,
+            'numSerie' => $request->numSerie,
+            
             'quantite' => $request->quantite,
+            'nom' => $request->nom,
+            'Secteur' => $request->Secteur,
+            'matieres' => $request->matieres,
             'lieu' => $request->lieu,
             'observation' => $request->observation,
             
         ]);
 
-        return redirect()->route('ficheintervention.index')->with('success', "Pavillon ajouté avec Succés");
+        
+        Probleme::where('id', $request->probleme_id)->update(['etat' => 1]);
+        return redirect()->route('probleme.index')->with('success', "Pavillon ajouté avec Succés");
     }
 
+    
+    public function showFichesByProbleme($id)
+{
+    $notifications = Notification::where('read', false)->get();
+    $fiches = FicheIntervention::where('id', $id) 
+                                ->with('probleme')
+                                ->get();
+    return view('ficheintervention.index', compact('fiches','notifications'));
+}
+
+
+    
     public function edit($id)
     {
-        $fiche = FicheIntervention::findOrFail($id);
+        $fiche = FicheIntervention::with('probleme')->findOrFail($id);
         return view('ficheintervention.edit', compact('fiche'));
     }
 

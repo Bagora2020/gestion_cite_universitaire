@@ -1,11 +1,13 @@
 @extends('layouts.apps')
 @section('content')
+
+
 <div class="container mt-5">
     <div class="card">
         <div class="card-header d-flex align-content-center justify-content-between">
             <h1 class="h2">Liste des utilisateurs et leurs rôles</h1>
             <div>
-                <a href="{{ route('users.create') }}" class="btn btn-success me-2">
+                <a href="#" class="btn btn-success me-2">
                     <i class="bi bi-plus-circle"></i> Ajouter user
                 </a>
                 <a href="/dashboard" class="btn btn-danger">
@@ -28,9 +30,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $user)
+                       
                         <tr>
-                            <th scope="row">{{ $user->id }}</th>
+                            <th scope="row">#</th>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ implode(', ', $user->roles()->pluck('name')->toArray()) }}</td>
@@ -73,5 +75,7 @@
         </div>
     </div>
 </div>
+
+
 
 @endsection

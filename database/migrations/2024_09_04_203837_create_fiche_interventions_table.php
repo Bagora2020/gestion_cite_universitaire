@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('fiche_interventions', function (Blueprint $table) {
             $table->id();
-            $table->string('nature');
-            $table->string('quantite');
-            $table->string('lieu');
+            $table->integer('quantite');
+            $table->string('nom');
+            $table->string('Secteur');
+            $table->string('matieres');
             $table->string('observation');
+            $table->string('numSerie');
+            $table->string('objet'); 
+            $table->string('lieu'); 
+
+            
             $table->timestamps();
         });
     }

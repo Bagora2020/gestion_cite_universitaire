@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\models\Probleme;
 use App\models\Pavillon;
 use App\Models\Notification;
+use App\Models\FicheIntervention;
 
 
 class ProblemeController extends Controller
@@ -13,6 +14,7 @@ class ProblemeController extends Controller
     public function index(Request $request)
     {
         $probleme = Probleme::All();
+        $fiche = FicheIntervention::All();
 
 
         \Log::info("Request Data: ", $request->all());
@@ -45,7 +47,7 @@ class ProblemeController extends Controller
     $notifications = Notification::where('read', false)->get();
     
         
-        return view('probleme.index',compact('probleme','notifications'));
+        return view('probleme.index',compact('probleme','notifications', 'fiche'));
     }
 
     public function create(){
@@ -54,6 +56,14 @@ class ProblemeController extends Controller
         $notifications = Notification::where('read', false)->get();
         return view('probleme.create',compact('pavillon','notifications'));
     }
+
+    public function show($id){
+        $probleme= Probleme::findOrFail($id);
+        $notifications = Notification::where('read', false)->get();
+        return view('probleme.show',compact('probleme','notifications'));
+    }
+
+
 
     public function store(Request $request)
     {
@@ -81,15 +91,26 @@ class ProblemeController extends Controller
                 $imagePaths[] = str_replace('public/', '', $path); // Conserve le chemin relatif
             }
         }
+              $lastProbleme = Probleme::orderBy('id', 'desc')->first();
     
+            // Vérifier si un problème existe déjà, sinon démarrer à 1
+            $lastNumeroSerie = $lastProbleme ? intval($lastProbleme->numSerie) : 0;
+        
+            // Générer un nouveau numéro de série avec un padding de 4 chiffres (ex: 0001, 0002, etc.)
+            $newNumeroSerie = str_pad($lastNumeroSerie + 1, 4, '0', STR_PAD_LEFT);
+        
+
         // Enregistrement des autres informations, y compris le chemin de l'image
         Probleme::create([
+
+            
             'Appartement' => $request->Appartement,
             'NumChambre' => $request->NumChambre,
             'Objet' => $request->Objet,
             'images' => json_encode($imagePaths), // Encode le tableau en JSON
             'message' => $request->message,
             'pavillon_NomPav' => $request->pavillon_NomPav,
+           'numSerie' => $newNumeroSerie,
         ]);
 
         
@@ -121,8 +142,7 @@ class ProblemeController extends Controller
        
         $probleme = Probleme::findOrFail($id);
         $probleme->update($request->all());
-
-       
+        
 
         // Validation des nouvelles images si présentes
        

@@ -12,6 +12,7 @@
                margin: 0;
                padding: 0 3%;
           }
+       
           .header {
               
                justify-content: space-between;
@@ -123,37 +124,38 @@
    <header>
     <div class="header">
         <div class="first">
-        <p>République du Sénégal</p>
-        <p>Un peuple - Un but - Une Foi</p>
+        
+        <p> <b>République du Sénégal</b></p>
+        <p><b>Un peuple - Un but - Une Foi</b></p>
         </div>
         <div class="trait">
-            <h3>---------------</h3>
+        <b><h3>---------------</b></h3>
         </div>
         <div class= "drapeau">
         <img src="img/dpsenegal.png" alt="drapeau du sénégal">
         </div>
         <div class="Mesri">
-            <p>MINISTERE DE L'ENSEIGNMENT SUPERIEUR DE LA RECHERCHE ET DE</p>
-            <p>L'INNOVATION</p>
+            <p><b>MINISTERE DE L'ENSEIGNMENT SUPERIEUR DE LA RECHERCHE ET DE</b></p>
+            <p><b>L'INNOVATION</b></p>
         </div>
         <div class="trait">
-            <h3>---------------</h3>
+            <h3><b>---------------</b></h3>
         </div>
         <div class="Crous">
-            <p>CENTRE REGIONAL DES OEUVRES UNIVERSITAIRES SOCIALES DE ZIGUINCHOR</p>
-            <p>(CROUSZ)</p>
+            <p><b>CENTRE REGIONAL DES OEUVRES UNIVERSITAIRES SOCIALES DE ZIGUINCHOR</b></p>
+            <p><b>(CROUSZ)</b></p>
         </div>
         <div class= "crous">
         <img src="img/crous.png" alt="logo crousz">
         </div>
         <div class="DECT">
-            <p>DIVISION DE L'ENTRETIEN, DES CONSTRUCTIONS ET DU TRANSPORT</p>
-            <p>(D.E.C.T)</p>
+            <p><b>DIVISION DE L'ENTRETIEN, DES CONSTRUCTIONS ET DU TRANSPORT</b></p>
+            <p><b>(D.E.C.T)</b></p>
         </div>
 
         <hr>
         <div class="SEC">
-            <p>SERVICE DE L'ENTRETIEN ET DE LA CONSTRUCTION (S.E.C)</p>
+            <p><b>SERVICE DE L'ENTRETIEN ET DE LA CONSTRUCTION (S.E.C)</b></p>
            
         </div>
 
@@ -165,8 +167,8 @@
     </header>
 
     <div class="">
-        <p>Prénom et Nom de l'ouvrier intervenant: ..................................................</p>
-        <p>Secteur de l'ouvrier intervenant: ..................................................................</p>
+        <p><b>Prénom et Nom de l'ouvrier intervenant: ..................................................</b></p>
+        <p><b>Secteur de l'ouvrier intervenant: ..................................................................</b></p>
     </div>
 
     <table class="table table-striped table-border">
@@ -180,10 +182,10 @@
         </thead>
         <tbody>
             <tr>
-                <td class="bordered">1</td>
-                <td class="bordered">2</td>
-                <td class="bordered">2</td>
-                <td class="bordered">2</td>
+                <td class="bordered">{{ $fiche->objet }}</td>
+                <td class="bordered">{{ $fiche->quantite }}</td>
+                <td class="bordered">{{ $fiche->lieu }}</td>
+                <td class="bordered">{{ $fiche->observation }}</td>
             </tr>
         </tbody>
     </table>

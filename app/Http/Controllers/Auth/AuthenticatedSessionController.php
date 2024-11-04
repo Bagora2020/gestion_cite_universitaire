@@ -16,6 +16,16 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
+
+
+     protected function authenticated(Request $request, $user)
+     {
+         if ($user->status == 0) {
+             Auth::logout();
+             return redirect()->route('login')->withErrors(['Votre compte est désactivé. Veuillez contacter l’administrateur.']);
+         }
+     }
+    
     public function create(): View
     {
         // Récupérer les notifications non lues

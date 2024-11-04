@@ -18,10 +18,10 @@ class UsersController extends Controller
      */
     public function index()
     {
-       
+        $notifications = Notification::where('read', false)->get();
         
         $users = User::All();
-        return view('admin.users.index',compact('users'))->with('user', $users);
+        return view('admin.users.index',compact('users','notifications'))->with('user', $users);
     }
 
     /**
@@ -112,6 +112,17 @@ class UsersController extends Controller
         $user->roles()->detach();
        
         $user->delete();
-
+        return redirect()->route('users.index')->with('success', 'Utilisateur supprimé avec succès.');
     }
+
+
+    public function toggleStatus($id)
+{
+    $user = User::findOrFail($id);
+    $user->status = !$user->status; // Bascule entre actif et inactif
+    $user->save();
+
+    return redirect()->route('users.index')->with('success', 'Statut de l\'utilisateur mis à jour avec succès.');
+}
+
 }

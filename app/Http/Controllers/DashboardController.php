@@ -11,6 +11,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        //les cinq derniers soummissions
+        $derniersProblemes = Probleme::orderBy('created_at', 'desc')->take(5)->get();
+
         // Récupérer le nombre total de problèmes
         $totalProblemes = Probleme::count();
         $totalfactures = Factures::count();
@@ -38,8 +41,11 @@ class DashboardController extends Controller
      // Récupérer les notifications non lues
      $notifications = Notification::where('read', false)->get();
 
+
+
+     
      // Passer les variables à la vue
-     return view('dashboard.index', compact('totalProblemes', 'problemesResolus', 'problemesNonResolus', 'totalfactures', 'pavillons', 'totaux', 'notifications'));
+     return view('dashboard.index', compact('totalProblemes', 'problemesResolus', 'problemesNonResolus', 'totalfactures', 'pavillons', 'totaux', 'notifications','derniersProblemes'));
 }
 
 public function markAsRead()

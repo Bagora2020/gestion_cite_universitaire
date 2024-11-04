@@ -11,8 +11,10 @@ use App\Http\Controllers\FicheInterventionController;
 use App\Http\Controllers\FacturesController;
 use App\Http\Controllers\FicheInterventionPDFController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MatiereController;
 use App\Http\Controllers\NotificationController;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,11 +32,14 @@ Route::get('/', function () {
 });
 
 
+Route::patch('/users/{id}/toggle-status', [UsersController::class, 'toggleStatus'])->name('users.toggleStatus');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'check.status'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-   ;
 });
+
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -43,9 +48,10 @@ Route::middleware('auth')->group(function () {
 });
    
 Route::middleware('can:manage-app')->group(function () {
-    Route::resource('/admin/users', UsersController::class);
-    Route::get('/admin/users/create', [UsersController::class, 'create'])->name('users.create');
-    Route::post('/admin/users/store', [UsersController::class, 'store'])->name('users.store');
+    Route::get('/AdminIndex', [UsersController::class, 'index'])->name('users.index');
+    Route::get('/adminuserscreate', [UsersController::class, 'create'])->name('users.create');
+    Route::post('/adminusersstore', [UsersController::class, 'store'])->name('users.store');
+    Route::get('/adminusers{id}Edit', [UsersController::class, 'edit'])->name('users.edit');
     
     Route::delete('/users/{user}', [UsersController::class, 'destroy'])->name('users.destroy');
 });
@@ -69,8 +75,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/problemeCreate', [ProblemeController::class, 'create'])->name('probleme.create');
     Route::get('/problemeIndex', [ProblemeController::class, 'index'])->name('probleme.index');
     Route::post('/problemeAdd', [ProblemeController::class, 'store'])->name('probleme.add');
-    Route::get('/probleme/{id}/Edit', [ProblemeController::class, 'edit'])->name('probleme.edit');
-    Route::put('/probleme/{id}/Update', [ProblemeController::class, 'update'])->name('probleme.update');
+    Route::get('/probleme{id}Edit', [ProblemeController::class, 'edit'])->name('probleme.edit');
+    Route::put('/probleme{id}Update', [ProblemeController::class, 'update'])->name('probleme.update');
+    
+    Route::get('/probleme{id}show', [ProblemeController::class, 'show'])->name('probleme.show');
 
     Route::delete('/probleme/{id}/delete', [ProblemeController::class, 'destroy'])->name('probleme.destroy');
     Route::post('/update-etat', [ProblemeController::class, 'updateEtat'])->name('probleme.update.etat');
@@ -79,6 +87,12 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/pdf/{id}',[BontravailPDFController::class, 'index'])->name('pdf.bontravail');
 Route::get('/pdf/{id}/fiche',[FicheInterventionPDFController::class, 'index'])->name('pdf.FicheInterventionPDF');
+
+
+Route::get('/problemes{probleme}fiches', [FicheInterventionController::class, 'showFichesByProbleme'])->name('ficheintervention.byProbleme');
+
+Route::get('/matiereIndex', [MatiereController::class, 'index'])->name('matiere.index');
+
 
 
 Route::middleware('auth')->group(function () {

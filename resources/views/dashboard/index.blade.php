@@ -6,30 +6,6 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">Tableau de Bord || {{now()->year}}</h1>
 
-      <form action="#" method="get" class="d-flex gap-2 ">
-        @csrf
-
-
-        <select id="yearSelect" onchange="afficherAnnee()" name="date" class="form-control">
-          <script>
-            var currentYear = new Date().getFullYear();
-            var selectOptions = '';
-            for (var year = currentYear; year >= 2022; year--) {
-              selectOptions += '<option value="' + year + '">' + year + '</option>';
-            }
-            document.write(selectOptions);
-          </script>
-        </select>
-
-        <button type="submit" value="" class="btn btn-primary">
-          <i class="bi bi-filter"></i>
-        </button>
-
-      </form>
-
-      
-
-
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="./">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
@@ -120,83 +96,139 @@
           </div>
         </div>
 
+        <div class="table-responsive">
+        <table class="table">
+    <thead>
+        <tr>
+            <th>Appartement</th>
+            <th>Numéro de Chambre</th>
+            <th>Objet</th>
+            <th scope="col">Statut</th>
+            <th>Date de Soumission</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($derniersProblemes as $probleme)
+            <tr>
+                <td>{{ $probleme->Appartement }}</td>
+                <td>{{ $probleme->NumChambre }}</td>
+                <td>{{ $probleme->Objet }}</td>
 
-        <style>
-    .chart-container {
-        position: relative;
-        width: 50%; /* Ajuste la largeur ici */
-        height: 300px; /* Ajuste la hauteur ici */
-        display: flex; /* Utilise Flexbox */
-        flex-direction: column; /* Dispose les éléments en colonne */
-        justify-content: center; /* Centre verticalement */
-        align-items: center; /* Centre horizontalement */
-        text-align: center; /* Centre le texte */
-    }
 
-    #problemesPavillonChart {
-        width: 30% !important; /* Assure que le graphique prend toute la largeur du conteneur */
-        height: 70% !important; /* Assure que le graphique prend toute la hauteur du conteneur */
-    }
-</style>
-
-<div class="chart-container">
-    <h3>Problèmes signalés par pavillon</h3>
-    <canvas id="problemesPavillonChart"></canvas>
-</div>
-
+                <td>
+        
+        <div class="form-check form-switch ">
+            <input type="checkbox" 
+                class="form-check-input etat-switch" 
+                data-id="{{ $probleme->id }}" 
+                {{ $probleme->etat ? 'checked' : '' }}
+                id="etat{{ $probleme->id }}"
+                style="width: 30px; height: 19px; cursor: pointer;">
+            <label class="form-check-label" for="etat{{ $probleme->id }}">
+                {{ $probleme->etat ? 'Résolu' : 'Non Résolu' }}
+            </label>
+        </div>
+  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    var ctx = document.getElementById('problemesPavillonChart').getContext('2d');
-    var problemesPavillonChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: {!! json_encode($pavillons = ['Pavillon A', 'Pavillon B', 'Pavillon C', 'Pavillon D']) !!},  // Labels des pavillons
-            datasets: [{
-                label: 'Problèmes signalés',
-                data: {!! json_encode($totaux) !!},  // Données des totaux des problèmes
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.7)',  // Rouge
-                    'rgba(54, 162, 235, 0.7)',  // Bleu
-                    'rgba(255, 206, 86, 0.7)',  // Jaune
-                    'rgba(75, 192, 192, 0.7)',  // Vert
-                    'rgba(153, 102, 255, 0.7)', // Violet
-                    'rgba(255, 159, 64, 0.7)'   // Orange
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,  // Active la légende
-                    position: 'bottom',  // Positionne la légende en bas
-                    labels: {
-                        boxWidth: 20,   // Taille de la boîte de couleur
-                        padding: 15,    // Espace entre les éléments de la légende
-                        color: 'black',  // Couleur du texte
-                        usePointStyle: true // Utilise des points colorés au lieu de carrés
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return tooltipItem.label + ': ' + tooltipItem.raw;
-                        }
-                    }
-                }
-            }
-        }
-    });
+$(document).ready(function() {
+// Initialisation de la couleur de fond selon l'état actuel
+$('.etat-switch').each(function() {
+$(this).css('background', $(this).prop('checked') ? 'green' : 'red');
+});
+
+// Écouter le changement de l'état lors du glissement
+$('.etat-switch').on('change', function() {
+var etat = $(this).prop('checked') ? 1 : 0; // Récupère l'état (résolu ou non résolu)
+var id = $(this).data('id'); // Récupère l'ID du problème
+var toggle = $(this); // Référence au toggle switch
+
+// Changer immédiatement la couleur de fond en fonction de l'état
+toggle.css('background', etat === 1 ? 'green' : 'red');
+
+// Requête AJAX pour mettre à jour le statut dans la base de données
+$.ajax({
+url: '{{ route('probleme.update.etat') }}', // Route pour mettre à jour l'état
+type: 'POST',
+data: {
+    _token: '{{ csrf_token() }}',
+    etat: etat,
+    id: id
+},
+success: function(response) {
+    if (response.success) {
+        // Met à jour le label avec le texte approprié
+        toggle.next('label').text(etat === 1 ? 'Résolu' : 'Non Résolu');
+    } else {
+        alert('Erreur lors de la mise à jour');
+    }
+},
+error: function(xhr) {
+    alert('Erreur lors de la mise à jour du statut');
+}
+});
+});
+});
 </script>
 
+        </td>
+
+
+                <td>{{ $probleme->created_at->format('d/m/Y H:i') }}</td>
+
+                <td>
+
+<div class="btn-group mb-1">
+       <button type="button" class="btn btn-danger">
+           <i class="fa fa-cog" aria-hidden="true"></i>
+       </button>
+       <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+       <span class="sr-only">Toggle Dropdown</span>
+       </button>
+   <div class="dropdown-menu">
+           @can('edit-users')
+           <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showModal{{$probleme->id}}">
+                   <i class="fa fa-eye" aria-hidden="true"></i>
+           </button> 
+           @endcan
+           @can('edit-users')
+                   <a href="{{route('probleme.edit', $probleme->id)}}"><button class="btn btn-warning">
+                       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                       </button></a>
+                   @endcan
+
+                   @can('edit-users')
+                   <a href="{{route ('pdf.bontravail', $probleme->id)}}"><button class="btn btn-success">
+                       <i class="fa fa-print" aria-hidden="true"></i>
+                       </button></a>
+                   @endcan
+
+                   @can('delete-users')
+                   <form action="{{route('probleme.destroy', $probleme->id)}}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');" class="d-inline">
+                       @csrf
+                       @method('DELETE')
+                       <button type="submit" class="btn btn-danger">
+                           <i class="fa fa-trash-o" aria-hidden="true"></i>
+                       </button>
+                   </form>
+                   @endcan
+
+           </div>
+       </div>
+</td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4">Aucun problème soumis récemment.</td>
+            </tr>
+
+        
+        @endforelse
+    </tbody>
+</table>
+</div>
 
 
 

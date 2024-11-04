@@ -3,7 +3,7 @@
 <div class="mx-auto container p-3">
     <div class="card">
         <div class="card-header d-flex align-content-center justify-content-between">
-            <h1 class="h2">Nouvelle recette</h1>
+            <h1 class="h2">Edit</h1>
             <button class="float-end btn btn-danger">
                 <i class="bi bi-arrow-90deg-left"></i>
                 Retour

@@ -42,15 +42,33 @@
             @endif
             </td>
                 <td>
-                    <a href="{{ route('Factures.edit', $factures->id) }}"><button class="btn btn-primary">Editer</button></a>
+
+                    
+                 <div class="btn-group mb-1">
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                    <div class="dropdown-menu">
+                            
+
+                    <a href="{{ route('Factures.edit', $factures->id) }}"><button class="btn btn-primary">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </button></a>
                
                     <form method="POST" action="{{ route('Factures.destroy', $factures->id) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément?');" class="d-inline">
                                 @csrf
                                 @method('DELETE')
 
-                                <button class="btn btn-danger">supprimer</button></a>
+                                <button class="btn btn-danger">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button></a>
                     </form>
-
+                     </div>
+                </div>
                     
                 </td>
             </tr>

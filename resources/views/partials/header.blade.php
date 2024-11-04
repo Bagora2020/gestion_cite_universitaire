@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand navbar-light bg-primary topbar mb-4 static-top 
+<nav class="navbar navbar-expand navbar-light bg-danger topbar mb-4 static-top 
 @if(Route::current()->getName() === 'login' || Route::current()->getName() === 'register') || Route::current()->getName() === '/admin/users/create')
     
                   d-none
@@ -34,7 +34,7 @@
             
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+                aria-haspopup="true" aria-expanded="false" onclik>
                 <i class="fas fa-bell fa-fw"></i>
                 <span class="badge badge-danger badge-counter">{{ $notifications->count() }}</span>
               </a>

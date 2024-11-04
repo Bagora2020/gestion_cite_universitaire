@@ -212,6 +212,9 @@
           .contain{
                margin-top: 28%;
           }
+          .align{
+               text-align: center;
+          }
      </style>
 </head>
 
@@ -241,7 +244,10 @@
      <div class="contain">
           <h1>BON DE TRAVAIL </h1>
           <p class="text-ordre-recette">
-               Pavillon ............. Appartement................ Chambre.............. <br>
+        
+               <b class="text-center">{{$invoice->pavillon->NomPav}} - Chambre {{$invoice->NumChambre}} - Appartement {{$invoice->Appartement}}</b><br>
+          
+
                Menuiserie bois - Plomberie - Electricité - Maçonnerie - Menuiserie Métalique <br>
                Nature......................................................................... <br>
                ...............................................................................

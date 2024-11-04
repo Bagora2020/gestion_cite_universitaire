@@ -14,5 +14,7 @@ class FicheInterventionPDFController extends Controller
     $pdf = Pdf::loadView('pdf.FicheInterventionPDF', compact('fiche'));
 
     return $pdf->stream();
+
+    
 }
 }
